@@ -21,9 +21,9 @@ cache:
 
 # sudo add-apt-repository ppa:hotot-team
 before_install:
-- env && false
-- if [ "$TRAVIS_ARCH" == "ppc64le" -o "$TRAVIS_ARCH" == "arm64" ]; then sudo add-apt-repository "deb http://ports.ubuntu.com/ubuntu-ports/ trusty main"; sudo apt-get update -qq; fi
+- if [ "$TRAVIS_ARCH" == "ppc64le" -o "$TRAVIS_ARCH" == "aarch64" ]; then sudo add-apt-repository "deb http://ports.ubuntu.com/ubuntu-ports/ trusty main"; sudo apt-get update -qq; fi
 - if [ "$TRAVIS_ARCH" == "amd64" ]; then sudo add-apt-repository "deb http://archive.ubuntu.com/ubuntu/ trusty main"; sudo apt-get update -qq; fi
+- false
 
 # To switch to Travis-CI's containerized (non-sudo) architecture,
 # all our dependencies need to be on Travis's whitelist:
