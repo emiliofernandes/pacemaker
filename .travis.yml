@@ -12,14 +12,8 @@ language: c
 matrix:
   include:
     - compiler: gcc
-      env:      MAINT_EXTRA=1
-      arch:     amd64
-    - compiler: clang
       env:      MAINT_EXTRA=0
-      arch:     amd64
-    - compiler: gcc
-      env:      MAINT_EXTRA=0
-      arch:     ppc64le  
+      arch:     arm64  
 
 cache:
   directories:
@@ -27,7 +21,7 @@ cache:
 
 # sudo add-apt-repository ppa:hotot-team
 before_install:
-- if [ "$TRAVIS_ARCH" == "ppc64le" ]; then sudo add-apt-repository "deb http://ports.ubuntu.com/ubuntu-ports/ trusty main"; sudo apt-get update -qq; fi
+- if [ "$TRAVIS_ARCH" == "ppc64le" -o "$TRAVIS_ARCH" == "arm64" ]; then sudo add-apt-repository "deb http://ports.ubuntu.com/ubuntu-ports/ trusty main"; sudo apt-get update -qq; fi
 - if [ "$TRAVIS_ARCH" == "amd64" ]; then sudo add-apt-repository "deb http://archive.ubuntu.com/ubuntu/ trusty main"; sudo apt-get update -qq; fi
 
 # To switch to Travis-CI's containerized (non-sudo) architecture,
@@ -54,6 +48,7 @@ install:
  - test $MAINT_EXTRA -eq 0 || sudo apt-get install -qq libxml2-utils xsltproc
 
 before_script:
+ - lscpu
 # some tests (e.g. cts-exec-helper) require actual system-wide credentials
  -   ./autogen.sh
  -   ./configure --with-daemon-user=nobody --with-daemon-group=nogroup
@@ -98,8 +93,8 @@ after_failure:
  - env | sort 
  - cat include/config.h
 
-notifications:
-  irc: "irc.freenode.org#pcmk"
+#notifications:
+#  irc: "irc.freenode.org#pcmk"
 #  email:
 #    recipients:
 #      - developers@clusterlabs.org
